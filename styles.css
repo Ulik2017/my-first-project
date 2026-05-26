@@ -1,1 +1,3 @@
 .trello-board{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px}.trello-col{background:#ebecf0;min-width:280px;max-width:280px;border-radius:8px;padding:10px}.trello-col h5{font-size:14px;font-weight:700;margin-bottom:10px;text-transform:capitalize}.trello-list{min-height:300px}.trello-card{background:#fff;border-radius:8px;padding:10px;margin-bottom:10px;box-shadow:0 1px 2px rgba(0,0,0,.15);cursor:grab;color:#1f2937;border-left:8px solid #3b82f6}.trello-card small{display:block;color:#6b7280;margin-top:6px}.gap-2{gap:.5rem}
+.customer-form .form-group{margin-bottom:.9rem}.customer-actions{display:flex;gap:.5rem;justify-content:flex-end;padding-top:.25rem;padding-bottom:.25rem}
+@media (max-width: 991.98px){.customer-actions{justify-content:flex-start}}

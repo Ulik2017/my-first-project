@@ -64,16 +64,23 @@
       </div></div>
 
       <div id="tab-customer" class="tab-panel card d-none"><div class="card-header"><h3 class="card-title">Customer Master</h3></div><div class="card-body">
-        <form id="customerForm" class="row">
+        <form id="customerForm" class="row customer-form">
           <input type="hidden" id="customerId" />
-          <div class="col-md-3 form-group"><label>Name</label><input id="customerName" class="form-control" required /></div>
-          <div class="col-md-3 form-group"><label>PIC</label><input id="customerPic" class="form-control" required /></div>
-          <div class="col-md-3 form-group"><label>Country</label><input id="customerCountry" class="form-control" required /></div>
-          <div class="col-md-3 form-group"><label>State</label><input id="customerState" class="form-control" required /></div>
-          <div class="col-md-3 form-group"><label>Email</label><input id="customerEmail" type="email" class="form-control" required /></div>
-          <div class="col-md-3 form-group"><label>Telp</label><input id="customerPhone" class="form-control" required /></div>
-          <div class="col-md-3 form-group"><label>Website</label><input id="customerWebsite" type="url" class="form-control" required /></div>
-          <div class="col-md-3 d-flex align-items-end gap-2"><button class="btn btn-primary" type="submit">Simpan</button><button class="btn btn-secondary" id="customerReset" type="button">Reset</button></div>
+          <div class="col-md-6 col-lg-3 form-group"><label>Name</label><input id="customerName" class="form-control" required /></div>
+          <div class="col-md-6 col-lg-3 form-group"><label>PIC</label><input id="customerPic" class="form-control" required /></div>
+          <div class="col-md-6 col-lg-3 form-group"><label>Country</label><input id="customerCountry" class="form-control" required /></div>
+          <div class="col-md-6 col-lg-3 form-group"><label>State</label><input id="customerState" class="form-control" required /></div>
+
+          <div class="col-md-6 col-lg-4 form-group"><label>Email</label><input id="customerEmail" type="email" class="form-control" required /></div>
+          <div class="col-md-6 col-lg-4 form-group"><label>Telp</label><input id="customerPhone" class="form-control" required /></div>
+          <div class="col-md-12 col-lg-4 form-group"><label>Website</label><input id="customerWebsite" type="url" class="form-control" required /></div>
+
+          <div class="col-12">
+            <div class="customer-actions">
+              <button class="btn btn-primary" type="submit">Simpan</button>
+              <button class="btn btn-secondary" id="customerReset" type="button">Reset</button>
+            </div>
+          </div>
         </form>
         <div class="table-responsive"><table id="customerTable" class="table table-bordered table-striped"><thead><tr><th>Name</th><th>PIC</th><th>Country</th><th>State</th><th>Email</th><th>Telp</th><th>Website</th><th>Aksi</th></tr></thead><tbody></tbody></table></div>
       </div></div>
