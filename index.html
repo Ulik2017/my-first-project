@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aplikasi Sales</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Aplikasi Sales</h1>
+  </header>
+
+  <main>
+    <section id="loginView" class="card">
+      <h2>Login</h2>
+      <form id="loginForm">
+        <label>Username <input id="loginUsername" required /></label>
+        <label>Password <input id="loginPassword" type="password" required /></label>
+        <button type="submit">Masuk</button>
+      </form>
+      <div id="adminModeChooser" class="hidden">
+        <h3>Pilih Mode Administrator</h3>
+        <button data-mode="project" class="mode-btn">Project</button>
+        <button data-mode="regular" class="mode-btn">Regular</button>
+      </div>
+      <p class="hint">User bawaan: <b>admin/admin123</b> (administrator), <b>sales1/sales123</b></p>
+    </section>
+
+    <section id="appView" class="hidden">
+      <div class="toolbar">
+        <span id="sessionInfo"></span>
+        <button id="logoutBtn">Logout</button>
+      </div>
+
+      <nav class="tabs">
+        <button class="tab active" data-tab="sales">Sales Master</button>
+        <button class="tab" data-tab="customer">Customer Master</button>
+        <button class="tab" data-tab="quotation">Detail Quotation</button>
+        <button class="tab" data-tab="calendar">Calendar Progress</button>
+      </nav>
+
+      <section id="tab-sales" class="card tab-panel">
+        <h2>Sales Master</h2>
+        <form id="salesForm" class="grid-form">
+          <input type="hidden" id="salesId" />
+          <label>Nama <input id="salesName" required /></label>
+          <label>Email <input id="salesEmail" type="email" required /></label>
+          <label>HP <input id="salesPhone" required /></label>
+          <label>Kategori
+            <select id="salesCategory" required>
+              <option value="regular">Regular</option>
+              <option value="project">Project</option>
+              <option value="administrator">Administrator</option>
+            </select>
+          </label>
+          <label>Username Login <input id="salesUsername" required /></label>
+          <div>
+            <button type="submit">Simpan Sales</button>
+            <button type="button" id="salesReset">Reset</button>
+          </div>
+        </form>
+        <table id="salesTable"><thead><tr><th>Nama</th><th>Email</th><th>HP</th><th>Kategori</th><th>Username</th><th>Aksi</th></tr></thead><tbody></tbody></table>
+      </section>
+
+      <section id="tab-customer" class="card tab-panel hidden">
+        <h2>Customer Master</h2>
+        <form id="customerForm" class="grid-form">
+          <input type="hidden" id="customerId" />
+          <label>Name <input id="customerName" required /></label>
+          <label>PIC <input id="customerPic" required /></label>
+          <label>Country <input id="customerCountry" required /></label>
+          <label>State <input id="customerState" required /></label>
+          <label>Email <input id="customerEmail" type="email" required /></label>
+          <label>Telp <input id="customerPhone" required /></label>
+          <label>Website <input id="customerWebsite" type="url" required /></label>
+          <div>
+            <button type="submit">Simpan Customer</button>
+            <button type="button" id="customerReset">Reset</button>
+          </div>
+        </form>
+        <table id="customerTable"><thead><tr><th>Name</th><th>PIC</th><th>Country</th><th>State</th><th>Email</th><th>Telp</th><th>Website</th><th>Aksi</th></tr></thead><tbody></tbody></table>
+      </section>
+
+      <section id="tab-quotation" class="card tab-panel hidden">
+        <h2>Detail Quotation</h2>
+        <form id="quotationForm" class="grid-form">
+          <input type="hidden" id="quotationId" />
+          <label>Sales
+            <select id="quotationSales" required></select>
+          </label>
+          <label>Customer
+            <select id="quotationCustomer" required></select>
+          </label>
+          <label>Total Kebutuhan <input id="quotationNeed" required /></label>
+          <label>Total Price <input id="quotationPrice" type="number" min="0" required /></label>
+          <label>Remark <input id="quotationRemark" /></label>
+          <label>Deadline <input id="quotationDeadline" type="date" required /></label>
+          <label>Progress
+            <select id="quotationProgress" required></select>
+          </label>
+          <div>
+            <button type="submit">Simpan Quotation</button>
+            <button type="button" id="quotationReset">Reset</button>
+          </div>
+        </form>
+        <table id="quotationTable"><thead><tr><th>Sales</th><th>Customer</th><th>Kebutuhan</th><th>Price</th><th>Remark</th><th>Deadline</th><th>Progress</th><th>Aksi</th></tr></thead><tbody></tbody></table>
+      </section>
+
+      <section id="tab-calendar" class="card tab-panel hidden">
+        <h2>Calendar Progress (Drag & Drop)</h2>
+        <div id="kanban" class="kanban"></div>
+      </section>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
