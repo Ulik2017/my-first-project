@@ -15,7 +15,8 @@ CREATE TABLE IF NOT EXISTS sales (
   email VARCHAR(150) NOT NULL,
   phone VARCHAR(50) NOT NULL,
   category ENUM('regular','project','administrator') NOT NULL,
-  username VARCHAR(100) UNIQUE NOT NULL
+  username VARCHAR(100) UNIQUE NOT NULL,
+  password VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS customers (
@@ -42,9 +43,9 @@ CREATE TABLE IF NOT EXISTS quotations (
   FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE
 );
 
-INSERT IGNORE INTO sales (id,name,email,phone,category,username) VALUES
-(1,'Admin Utama','admin@corp.com','080000000','administrator','admin'),
-(2,'Sales Reguler','sales1@corp.com','081111111','regular','sales1');
+INSERT IGNORE INTO sales (id,name,email,phone,category,username,password) VALUES
+(1,'Admin Utama','admin@corp.com','080000000','administrator','admin','admin123'),
+(2,'Sales Reguler','sales1@corp.com','081111111','regular','sales1','sales123');
 
 INSERT IGNORE INTO users (username,password,role,sales_id) VALUES
 ('admin','admin123','administrator',1),

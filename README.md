@@ -30,3 +30,8 @@ Buka `http://127.0.0.1:8000`.
 ## Login default
 - `admin / admin123`
 - `sales1 / sales123`
+
+
+## Catatan Login Sales
+- Sales Master sekarang memiliki field **Username Login** dan **Password Login**.
+- User sales bisa login sesuai data Sales Master, dan aksesnya mengikuti kategori `regular` atau `project`.

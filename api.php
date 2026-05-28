@@ -13,7 +13,7 @@ try {
 
   if ($action === 'bootstrap') {
     out([
-      'sales' => $pdo->query('SELECT * FROM sales ORDER BY id DESC')->fetchAll(),
+      'sales' => $pdo->query('SELECT id,name,email,phone,category,username,password FROM sales ORDER BY id DESC')->fetchAll(),
       'customers' => $pdo->query('SELECT * FROM customers ORDER BY id DESC')->fetchAll(),
       'quotations' => $pdo->query('SELECT * FROM quotations ORDER BY id DESC')->fetchAll(),
     ]);
@@ -29,15 +29,26 @@ try {
 
   if ($action === 'save-sales' && $method === 'POST') {
     if (!empty($input['id'])) {
-      $st = $pdo->prepare('UPDATE sales SET name=?, email=?, phone=?, category=?, username=? WHERE id=?');
-      $st->execute([$input['name'],$input['email'],$input['phone'],$input['category'],$input['username'],$input['id']]);
+      $st = $pdo->prepare('UPDATE sales SET name=?, email=?, phone=?, category=?, username=?, password=? WHERE id=?');
+      $st->execute([$input['name'],$input['email'],$input['phone'],$input['category'],$input['username'],$input['password'],$input['id']]);
     } else {
-      $st = $pdo->prepare('INSERT INTO sales(name,email,phone,category,username) VALUES(?,?,?,?,?)');
-      $st->execute([$input['name'],$input['email'],$input['phone'],$input['category'],$input['username']]);
+      $st = $pdo->prepare('INSERT INTO sales(name,email,phone,category,username,password) VALUES(?,?,?,?,?,?)');
+      $st->execute([$input['name'],$input['email'],$input['phone'],$input['category'],$input['username'],$input['password']]);
       $input['id'] = $pdo->lastInsertId();
     }
-    $st = $pdo->prepare('INSERT INTO users(username,password,role,sales_id) VALUES(?,?,?,?) ON DUPLICATE KEY UPDATE role=VALUES(role), sales_id=VALUES(sales_id)');
-    $st->execute([$input['username'],'sales123',$input['category'],$input['id']]);
+    $oldUser = null;
+    if (!empty($input['id'])) {
+      $oldSt = $pdo->prepare('SELECT username FROM users WHERE sales_id=? LIMIT 1');
+      $oldSt->execute([$input['id']]);
+      $oldUser = $oldSt->fetchColumn();
+    }
+    if ($oldUser && $oldUser !== $input['username']) {
+      $up = $pdo->prepare('UPDATE users SET username=?, password=?, role=? WHERE sales_id=?');
+      $up->execute([$input['username'],$input['password'],$input['category'],$input['id']]);
+    } else {
+      $st = $pdo->prepare('INSERT INTO users(username,password,role,sales_id) VALUES(?,?,?,?) ON DUPLICATE KEY UPDATE password=VALUES(password), role=VALUES(role), sales_id=VALUES(sales_id)');
+      $st->execute([$input['username'],$input['password'],$input['category'],$input['id']]);
+    }
     out(['ok'=>true]);
   }
 
