@@ -8,12 +8,19 @@ $input = json_decode(file_get_contents('php://input'), true) ?? [];
 
 function out($data, $code=200){ http_response_code($code); echo json_encode($data); exit; }
 
+function salesHasPasswordColumn(PDO $pdo): bool {
+  $st = $pdo->query("SHOW COLUMNS FROM sales LIKE 'password'");
+  return (bool)$st->fetch();
+}
+
 try {
   $pdo = db();
 
   if ($action === 'bootstrap') {
+    $hasPassword = salesHasPasswordColumn($pdo);
+    $salesSelect = $hasPassword ? 'SELECT id,name,email,phone,category,username,password FROM sales ORDER BY id DESC' : 'SELECT id,name,email,phone,category,username, NULL AS password FROM sales ORDER BY id DESC';
     out([
-      'sales' => $pdo->query('SELECT id,name,email,phone,category,username,password FROM sales ORDER BY id DESC')->fetchAll(),
+      'sales' => $pdo->query($salesSelect)->fetchAll(),
       'customers' => $pdo->query('SELECT * FROM customers ORDER BY id DESC')->fetchAll(),
       'quotations' => $pdo->query('SELECT * FROM quotations ORDER BY id DESC')->fetchAll(),
     ]);
@@ -28,12 +35,25 @@ try {
   }
 
   if ($action === 'save-sales' && $method === 'POST') {
+    $hasPassword = salesHasPasswordColumn($pdo);
+    $password = $input['password'] ?? 'sales123';
+
     if (!empty($input['id'])) {
-      $st = $pdo->prepare('UPDATE sales SET name=?, email=?, phone=?, category=?, username=?, password=? WHERE id=?');
-      $st->execute([$input['name'],$input['email'],$input['phone'],$input['category'],$input['username'],$input['password'],$input['id']]);
+      if ($hasPassword) {
+        $st = $pdo->prepare('UPDATE sales SET name=?, email=?, phone=?, category=?, username=?, password=? WHERE id=?');
+        $st->execute([$input['name'],$input['email'],$input['phone'],$input['category'],$input['username'],$password,$input['id']]);
+      } else {
+        $st = $pdo->prepare('UPDATE sales SET name=?, email=?, phone=?, category=?, username=? WHERE id=?');
+        $st->execute([$input['name'],$input['email'],$input['phone'],$input['category'],$input['username'],$input['id']]);
+      }
     } else {
-      $st = $pdo->prepare('INSERT INTO sales(name,email,phone,category,username,password) VALUES(?,?,?,?,?,?)');
-      $st->execute([$input['name'],$input['email'],$input['phone'],$input['category'],$input['username'],$input['password']]);
+      if ($hasPassword) {
+        $st = $pdo->prepare('INSERT INTO sales(name,email,phone,category,username,password) VALUES(?,?,?,?,?,?)');
+        $st->execute([$input['name'],$input['email'],$input['phone'],$input['category'],$input['username'],$password]);
+      } else {
+        $st = $pdo->prepare('INSERT INTO sales(name,email,phone,category,username) VALUES(?,?,?,?,?)');
+        $st->execute([$input['name'],$input['email'],$input['phone'],$input['category'],$input['username']]);
+      }
       $input['id'] = $pdo->lastInsertId();
     }
     $oldUser = null;
@@ -44,10 +64,10 @@ try {
     }
     if ($oldUser && $oldUser !== $input['username']) {
       $up = $pdo->prepare('UPDATE users SET username=?, password=?, role=? WHERE sales_id=?');
-      $up->execute([$input['username'],$input['password'],$input['category'],$input['id']]);
+      $up->execute([$input['username'],$password,$input['category'],$input['id']]);
     } else {
       $st = $pdo->prepare('INSERT INTO users(username,password,role,sales_id) VALUES(?,?,?,?) ON DUPLICATE KEY UPDATE password=VALUES(password), role=VALUES(role), sales_id=VALUES(sales_id)');
-      $st->execute([$input['username'],$input['password'],$input['category'],$input['id']]);
+      $st->execute([$input['username'],$password,$input['category'],$input['id']]);
     }
     out(['ok'=>true]);
   }
