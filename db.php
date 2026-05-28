@@ -14,6 +14,14 @@ function ensureSchema(PDO $pdo, string $dbname): void {
         $pdo->exec("UPDATE sales SET password = 'admin123' WHERE username = 'admin'");
         $pdo->exec("UPDATE sales SET password = 'sales123' WHERE (password = '' OR password IS NULL)");
     }
+
+    $q2 = $pdo->prepare("SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = 'customers' AND COLUMN_NAME = 'address'");
+    $q2->execute([$dbname]);
+    $addrExists = (int)$q2->fetchColumn() > 0;
+    if (!$addrExists) {
+        $pdo->exec("ALTER TABLE customers ADD COLUMN address TEXT NOT NULL AFTER website");
+        $pdo->exec("UPDATE customers SET address = '-' WHERE address IS NULL OR address = ''");
+    }
 }
 
 function db(): PDO {

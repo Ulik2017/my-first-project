@@ -27,7 +27,8 @@ CREATE TABLE IF NOT EXISTS customers (
   state VARCHAR(100) NOT NULL,
   email VARCHAR(150) NOT NULL,
   phone VARCHAR(50) NOT NULL,
-  website VARCHAR(200) NOT NULL
+  website VARCHAR(200) NOT NULL,
+  address TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS quotations (

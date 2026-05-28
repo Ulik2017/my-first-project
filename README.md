@@ -5,7 +5,7 @@ Aplikasi sales dengan tampilan **AdminLTE** dan progress board model **Trello** 
 ## Fitur
 - Login (administrator wajib pilih mode Project / Regular)
 - Sales Master
-- Customer Master
+- Customer Master (dengan Alamat, Country lookup/search seluruh dunia, dan State provinsi Indonesia)
 - Detail Quotation
 - Progress Board kolom: lead, contacted, qualified, proposal made, won, lost
 - Warna kartu berdasarkan nama sales

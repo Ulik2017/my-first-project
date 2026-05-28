@@ -74,11 +74,11 @@ try {
 
   if ($action === 'save-customer' && $method === 'POST') {
     if (!empty($input['id'])) {
-      $st = $pdo->prepare('UPDATE customers SET name=?, pic=?, country=?, state=?, email=?, phone=?, website=? WHERE id=?');
-      $st->execute([$input['name'],$input['pic'],$input['country'],$input['state'],$input['email'],$input['phone'],$input['website'],$input['id']]);
+      $st = $pdo->prepare('UPDATE customers SET name=?, pic=?, country=?, state=?, email=?, phone=?, website=?, address=? WHERE id=?');
+      $st->execute([$input['name'],$input['pic'],$input['country'],$input['state'],$input['email'],$input['phone'],$input['website'],$input['address'],$input['id']]);
     } else {
-      $st = $pdo->prepare('INSERT INTO customers(name,pic,country,state,email,phone,website) VALUES(?,?,?,?,?,?,?)');
-      $st->execute([$input['name'],$input['pic'],$input['country'],$input['state'],$input['email'],$input['phone'],$input['website']]);
+      $st = $pdo->prepare('INSERT INTO customers(name,pic,country,state,email,phone,website,address) VALUES(?,?,?,?,?,?,?,?)');
+      $st->execute([$input['name'],$input['pic'],$input['country'],$input['state'],$input['email'],$input['phone'],$input['website'],$input['address']]);
     }
     out(['ok'=>true]);
   }
